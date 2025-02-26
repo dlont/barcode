@@ -6,7 +6,7 @@ app = typer.Typer()
 
 
 @app.command()
-def barcode(text: str, out: str, print_text: Optional[bool] = False):
+def barcode(text: str, out: str, print_text: Optional[bool] = True):
     print(f"Text: {text}")
 
     import barcode
