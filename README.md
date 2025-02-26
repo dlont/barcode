@@ -10,11 +10,14 @@
 
  # download codes
  git clone https://github.com/dlont/barcode.git
+
+ # install python dependencies in virtual environement
+ cd barcode
+ poetry install
  ```
 # Usage
 
  ```bash
- cd barcode
  poetry run python bc.py --help
  poetry run python bc.py "Hello, Inna" my_barcode
  ```
