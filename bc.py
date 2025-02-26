@@ -1,13 +1,16 @@
 import typer
 
+from typing import Optional
+
 app = typer.Typer()
 
 
 @app.command()
-def barcode(text: str, out: str):
+def barcode(text: str, out: str, print_text: Optional[bool] = False):
     print(f"Text: {text}")
 
-    from io import BytesIO
+    import barcode
+    barcode.base.Barcode.default_writer_options['write_text'] = print_text
 
     from barcode import Code128
     from barcode.writer import SVGWriter
