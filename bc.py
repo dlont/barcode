@@ -1,5 +1,11 @@
 import typer
 
+import segno
+
+import barcode
+from barcode import Code128
+from barcode.writer import SVGWriter, ImageWriter
+
 from typing import Optional
 
 app = typer.Typer()
@@ -8,6 +14,7 @@ app = typer.Typer()
 @app.command()
 def barcode(text: str,
             out: str,
+            qr: Optional[bool] = False,
             print_text: Optional[bool] = True,
             ext: Optional[str] = 'svg',
             height: Optional[float] = 5.0):
@@ -24,17 +31,19 @@ def barcode(text: str,
     #     "foreground": "black",    # Barcode color (optional)
     # }
 
-    import barcode
-    barcode.base.Barcode.default_writer_options['write_text'] = print_text
-    barcode.base.Barcode.default_writer_options['module_height'] = height
+    if qr:
+        qrcode = segno.make_qr(text)
+        qrcode.save(f"{out}.{ext}",scale=2)
 
-    from barcode import Code128
-    from barcode.writer import SVGWriter, ImageWriter
+    else:
+        barcode.base.Barcode.default_writer_options['write_text'] = print_text
+        barcode.base.Barcode.default_writer_options['module_height'] = height
 
-    writer = SVGWriter()
-    if ext == 'png': writer = ImageWriter()
-    with open(f"{out}.{ext}", "wb") as f:
-        Code128(text, writer=writer).write(f)
+
+        writer = SVGWriter()
+        if ext == 'png': writer = ImageWriter()
+        with open(f"{out}.{ext}", "wb") as f:
+            Code128(text, writer=writer).write(f)
 
 
 
